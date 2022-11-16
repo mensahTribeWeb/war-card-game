@@ -26,11 +26,15 @@ __||  ||__              ((   `'- |
 // global variables
 
 let deckId;
+let computerScore = 0;
+let userScore = 0;
 const cardContainer = document.getElementById("cards");
 const newDeck = document.getElementById("new-deck");
 const drawBtn = document.getElementById("draw");
 const remaining  = document.getElementById("remaining");
 const winner  = document.getElementById("header");
+const computerScoreEl = document.getElementById("computer-score");
+const userScoreEl = document.getElementById("user-score");
 
 // handling a new deck 
 
@@ -69,6 +73,13 @@ function drawCard() {
 
     if (data.remaining === 0) {
       draw.disabled = true
+      if(computerScore > userScore){
+        header.text= "The COMPUTER WIN!!!"
+      }
+      else if(userScore > computerScore){
+        header.text= "YOU WIN!!!"
+      }
+      else{header.textContent = "It's a tie game!"}
   }
 
   })
@@ -78,7 +89,7 @@ function drawCard() {
   drawBtn.addEventListener("click", drawCard)
 
 
-function determineCardWinner(card1, card2) {
+ function determineCardWinner(card1, card2) {
   const valueOptions = ["2", "3", "4", "5", "6", "7", "8", "9", 
     "10", "JACK", "QUEEN", "KING", "ACE"]
 
@@ -86,11 +97,15 @@ function determineCardWinner(card1, card2) {
     const card2ValueIndex = valueOptions.indexOf(card2.value)
     // console.log("card 1:", card1ValueIndex)
     // console.log("card 2:", card2ValueIndex)
-
+ 
     if (card1ValueIndex > card2ValueIndex) {
+      computerScore++
+      computerScoreEl.textContent = `Computer Score: ${computerScore}`
       return ("Computer Wins!")
     } 
    else if (card1ValueIndex < card2ValueIndex) {
+     userScore++
+    userScoreEl.textContent = `User  Score: ${userScore}`
      return ("You Win!")
     }
   else {
@@ -98,8 +113,14 @@ function determineCardWinner(card1, card2) {
 }
 
 
+// example of async/ await has the function appear to bw completely synchronous
 
-
+// async function handleClick() {
+//     const response = await fetch("https://apis.scrimba.com/deckofcards/api/deck/new/shuffle/")
+//     const data = await res.json()
+//     remainingText.textContent = `Remaining cards: ${data.remaining}`
+//     deckId = data.deck_id
+//     console.log(deckId)
 
 
 
